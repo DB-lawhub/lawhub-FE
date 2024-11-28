@@ -1,6 +1,14 @@
+"use client";
 import Head from "next/head";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
+  const handleBusinessRegistration = () => {
+    router.push("/business");
+  };
+
   return (
     <div className="bg-blue-50 min-h-screen ">
       <Head>
@@ -48,7 +56,10 @@ export default function Home() {
             <br />
             법률에 근거하여 정확하고 빠르게 결과를 제공합니다.
           </p>
-          <button className="bg-[#2AA8FF] text-white px-6 py-3 rounded hover:bg-[#0080D8]">
+          <button
+            className="bg-[#2AA8FF] text-white px-6 py-3 rounded hover:bg-[#0080D8]"
+            onClick={handleBusinessRegistration}
+          >
             내 사업 등록하기
           </button>
         </div>
@@ -64,7 +75,7 @@ export default function Home() {
                 placeholder="더 많은 세금 종류를 검색"
                 className="flex-grow border border-gray-300 px-4 py-2 rounded"
               />
-              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+              <button className="bg-[#2AA8FF] text-white px-6 py-3 rounded hover:bg-[#0080D8]">
                 검색하기
               </button>
             </div>
@@ -77,36 +88,24 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <button className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100">
-              <img
-                src="/wallet.svg"
-                alt="종합소득세"
-                className="w-12 h-12 pt-3"
-              />
-              <span className="text-gray-700 p-5">종합소득세</span>
+              <img src="/wallet.svg" alt="종합소득세" className="w-10 h-10" />
+              <span className="text-gray-700">종합소득세</span>
             </button>
             <button className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100">
-              <img src="/receipt.svg" alt="취득세" className="w-12 h-12 pt-3" />
-              <span className="text-gray-700 p-5">취득세</span>
+              <img src="/receipt.svg" alt="취득세" className="w-10 h-10" />
+              <span className="text-gray-700">취득세</span>
             </button>
             <button className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100">
-              <img src="/vat.svg" alt="부가가치세" className="w-12 h-12 pt-3" />
-              <span className="text-gray-700 p-5">부가가치세 (VAT)</span>
+              <img src="/vat.svg" alt="부가가치세" className="w-10 h-10" />
+              <span className="text-gray-700">부가가치세 (VAT)</span>
             </button>
             <button className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100">
-              <img
-                src="/transform.svg"
-                alt="양도세"
-                className="w-12 h-12 pt-3"
-              />
-              <span className="text-gray-700 p-5">양도세</span>
+              <img src="/transform.svg" alt="양도세" className="w-10 h-10" />
+              <span className="text-gray-700">양도세</span>
             </button>
             <button className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100">
-              <img
-                src="/ambulance.svg"
-                alt="4대보험"
-                className="w-12 h-12 pt-3"
-              />
-              <span className="text-gray-700 p-5">4대보험</span>
+              <img src="/ambulance.svg" alt="4대보험" className="w-10 h-10" />
+              <span className="text-gray-700">4대보험</span>
             </button>
           </div>
         </section>
