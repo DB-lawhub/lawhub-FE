@@ -1,20 +1,22 @@
 "use client";
 import Head from "next/head";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function BusinessDashboard() {
+  const router = useRouter();
   const [businesses, setBusinesses] = useState([
     {
       name: "DB 마스터즈",
       address: "서울특별시 강남구 테헤란로 123",
-      type: "소매업",
+      type: "통신업",
       typeId: 1,
       image: "/business-images/com-1.svg",
     },
     {
       name: "데이터베이스 빌더스",
       address: "서울특별시 성동구 성수이로 456",
-      type: "도매업",
+      type: "통신업",
       typeId: 2,
       image: "/business-images/com-2.svg",
     },
@@ -148,14 +150,16 @@ export default function BusinessDashboard() {
                 <button className="bg-white border-2 border-blue-300 text-[#2AA8FF] px-4 py-2 rounded">
                   {business.type}
                 </button>
-                <button className="bg-[#2AA8FF] text-white px-4 py-1 rounded hover:bg-[#0080D8]">
-                  세금 계산하기
+                <button
+                  className="bg-[#2AA8FF] text-white px-4 py-1 rounded hover:bg-[#0080D8]"
+                  onClick={() => router.push("/manage")}
+                >
+                  세금 및 직원 관리
                 </button>
               </div>
             </div>
           ))}
 
-          {/* Add Business Button */}
           <button
             onClick={() => setIsModalOpen(true)}
             className="flex flex-col items-center justify-center bg-blue-50 border-2 border-dashed border-blue-300 p-6 rounded-lg hover:bg-blue-100"
@@ -166,7 +170,6 @@ export default function BusinessDashboard() {
         </div>
       </main>
 
-      {/* Modal for Adding Business */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
