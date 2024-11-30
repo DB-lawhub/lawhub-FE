@@ -1,8 +1,12 @@
 "use client";
 import { useState } from "react";
 import EmployeeForm from "./employee";
+import { useRouter } from "next/navigation";
+import Navigation from "../component/navgation";
 
 export default function TaxCalculator() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     businessName: "",
     industry: "소매업",
@@ -43,6 +47,11 @@ export default function TaxCalculator() {
     );
   };
 
+  const handleCalculateTaxes = () => {
+    console.log("세금 계산 중..."); // 필요 시 추가 작업 수행
+    router.push("/result"); // Next.js 라우터로 /result 경로 이동
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -55,28 +64,7 @@ export default function TaxCalculator() {
 
   return (
     <div>
-      <header className="bg-blue-100 py-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-4">
-          <div className="flex items-center space-x-3">
-            <img src="/logo.svg" alt="LawHub Logo" className="w-10 h-10" />
-            <h1 className="text-2xl font-bold text-[#2AA8FF]">LawHub</h1>
-          </div>
-          <nav className="flex space-x-4 pt-1">
-            <a href="#" className="text-gray-700 font-bold pt-2">
-              세금 계산하기
-            </a>
-            <a href="#" className="text-gray-700 hover:font-bold pt-2">
-              내 사업 관리
-            </a>
-            <a href="#" className="text-gray-700 hover:font-bold pt-2 pr-5">
-              마이페이지
-            </a>
-            <button className="bg-[#2AA8FF] text-white px-10 py-2 rounded hover:bg-[#0080D8]">
-              로그아웃
-            </button>
-          </nav>
-        </div>
-      </header>
+      <Navigation></Navigation>
       <div className="bg-blue-50 min-h-screen p-6">
         <h1 className="text-2xl font-bold text-center text-[#2AA8FF] mb-6">
           필요한 정보를 입력하고 한번에 쉽고 빠르게 세금을 계산하세요!
@@ -96,6 +84,7 @@ export default function TaxCalculator() {
               onChange={handleInputChange}
               className="flex-1 border px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
             />
+            <span className="text-bold">{formData.businessName}</span>
           </div>
 
           <div className="mb-6 flex items-center space-x-4 border-b border-[#F0F0F5] pb-6">
@@ -111,28 +100,15 @@ export default function TaxCalculator() {
                 <option value="서비스업">서비스업</option>
                 <option value="제조업">제조업</option>
               </select>
-
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="businessType"
-                  value="일반 사업자"
-                  checked={formData.businessType === "일반 사업자"}
-                  onChange={handleInputChange}
-                />
-                <span>일반 사업자</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="businessType"
-                  value="법인 사업자"
-                  checked={formData.businessType === "법인 사업자"}
-                  onChange={handleInputChange}
-                />
-                <span>법인 사업자</span>
-              </label>
+              <span className="text-bold">{formData.industry}</span>
             </div>
+          </div>
+
+          <div className="mb-6 flex items-center space-x-4 border-b border-[#F0F0F5] pb-6">
+            <label className="text-gray-700 w-1/4 text-center">
+              사업자 유형
+            </label>
+            <span className="text-bold">{formData.businessType}</span>
           </div>
 
           <h2 className="text-xl font-bold text-black mt-6 mb-5">종합소득세</h2>
@@ -152,6 +128,7 @@ export default function TaxCalculator() {
               />
               <span className="ml-2 text-gray-700">원</span>
             </div>
+            <span className="text-bold">{formData.income}</span>
           </div>
 
           <div className="mb-6 flex items-center space-x-4 border-b border-[#F0F0F5] pb-6">
@@ -159,13 +136,14 @@ export default function TaxCalculator() {
             <div className="flex flex-1 items-center">
               <input
                 type="number"
-                name="income"
-                value={formData.income}
+                name="expenses"
+                value={formData.expenses}
                 onChange={handleInputChange}
                 className="flex-1 border px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               />
               <span className="ml-2 text-gray-700">원</span>
             </div>
+            <span className="text-bold">{formData.expenses}</span>
           </div>
 
           <div className="mb-6 flex items-center space-x-4 border-b border-[#F0F0F5] pb-6">
@@ -182,6 +160,7 @@ export default function TaxCalculator() {
                 />
                 <span className="text-gray-700">원</span>
               </div>
+              <span className="text-bold">{formData.personalDeduction}</span>
 
               <div className="flex items-center space-x-2">
                 <span className="text-gray-700">국민연금 등 합계</span>
@@ -194,6 +173,7 @@ export default function TaxCalculator() {
                 />
                 <span className="text-gray-700">원</span>
               </div>
+              <span className="text-bold">{formData.pensionDeduction}</span>
             </div>
           </div>
 
@@ -210,6 +190,7 @@ export default function TaxCalculator() {
             <span className="text-gray-700">
               명 (소득금액이 100만원 이하인 만 20세 이하 자녀)
             </span>
+            <span className="text-bold">{formData.childrenCount}</span>
           </div>
 
           <h2 className="text-xl font-bold text-black mt-6 mb-4">부가가치세</h2>
@@ -239,83 +220,37 @@ export default function TaxCalculator() {
                 <span>간이과세자</span>
               </label>
             </div>
+            <span className="text-bold">{formData.vatType}</span>
           </div>
+
           <div className="mb-6 flex items-center space-x-4 border-b border-[#F0F0F5] pb-6">
             <label className="text-gray-700 w-1/4 text-center">매입</label>
             <div className="flex flex-1 items-center">
               <input
                 type="number"
-                name="income"
-                value={formData.income}
+                name="purchaseAmount"
+                value={formData.purchaseAmount}
                 onChange={handleInputChange}
                 className="flex-1 border px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               />
               <span className="ml-2 text-gray-700">원</span>
             </div>
+            <span className="text-bold">{formData.purchaseAmount}</span>
           </div>
+
           <div className="mb-6 flex items-center space-x-4 border-b border-[#F0F0F5] pb-6">
-            <label className="text-gray-700 w-1/4 text-center">매출액</label>
+            <label className="text-gray-700 w-1/4 text-center">매출</label>
             <div className="flex flex-1 items-center">
               <input
                 type="number"
-                name="income"
-                value={formData.income}
+                name="salesAmount"
+                value={formData.salesAmount}
                 onChange={handleInputChange}
                 className="flex-1 border px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               />
               <span className="ml-2 text-gray-700">원</span>
             </div>
-          </div>
-
-          <div className="mt-6">
-            <h2 className="text-xl font-bold text-black mb-4">직원</h2>
-            <div className="h-[2px] bg-[#2AA8FF] mb-4"></div>
-            {/* Divider for 직원 */}
-            <EmployeeForm></EmployeeForm>
-          </div>
-
-          {/* 임대료 Section */}
-          <div className="mt-6">
-            <h2 className="text-xl font-bold text-black mb-4">임대료</h2>
-            <div className="h-[2px] bg-[#2AA8FF] mb-4"></div>
-            {/* Divider for 임대료 */}
-            {/* 보증금 */}
-            <div className="mb-6 flex items-center space-x-4 border-b border-[#F0F0F5] pb-6">
-              <label className="text-gray-700 w-1/4 text-center">보증금</label>
-              <div className="flex flex-1 items-center space-x-2">
-                <input
-                  type="number"
-                  name="deposit"
-                  value={formData.deposit}
-                  onChange={handleInputChange}
-                  className="w-1/3 border px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-                />
-                <span className="text-gray-700">원</span>
-              </div>
-            </div>
-            {/* 월세 */}
-            <div className="mb-6 flex items-center space-x-4 border-b border-[#F0F0F5] pb-6">
-              <label className="text-gray-700 w-1/4 text-center">월세</label>
-              <div className="flex flex-1 items-center space-x-2">
-                <input
-                  type="number"
-                  name="monthlyRent"
-                  value={formData.monthlyRent}
-                  onChange={handleInputChange}
-                  className="w-1/3 border px-3 py-2 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-                />
-                <span className="text-gray-700">원</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 flex justify-end">
-            <button
-              onClick={calculateTax}
-              className="bg-[#2AA8FF] text-white px-6 py-2 rounded hover:bg-[#0080D8]"
-            >
-              세금 계산하기
-            </button>
+            <span className="text-bold">{formData.salesAmount}</span>
           </div>
         </div>
       </div>

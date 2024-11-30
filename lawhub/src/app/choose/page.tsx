@@ -9,8 +9,6 @@ export default function BusinessDashboard() {
   const [businesses, setBusinesses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newBusiness, setNewBusiness] = useState({
-    business_name: "",
-    location: "",
     business_registration: "개인",
     number_of_employees: 0,
     business_type: "소매업",
@@ -48,6 +46,7 @@ export default function BusinessDashboard() {
     "해외파견(건설, 벌목업을 포함한 전사업)",
   ];
 
+  // API URL
   const API_URL = "http://127.0.0.1:8000/business/business/";
 
   // 전체 사업 데이터 불러오기
@@ -59,7 +58,7 @@ export default function BusinessDashboard() {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include",
+          credentials: "include", // 인증 정보 포함
         });
         if (response.ok) {
           const data = await response.json();
@@ -90,8 +89,6 @@ export default function BusinessDashboard() {
         const addedBusiness = await response.json();
         setBusinesses([...businesses, addedBusiness]);
         setNewBusiness({
-          business_name: "",
-          location: "",
           business_registration: "개인",
           number_of_employees: 0,
           business_type: "소매업",
@@ -105,6 +102,7 @@ export default function BusinessDashboard() {
     }
   };
 
+  // 삭제 요청
   const deleteBusiness = async (businessId) => {
     try {
       const response = await fetch(`${API_URL}${businessId}/`, {
@@ -121,6 +119,7 @@ export default function BusinessDashboard() {
     }
   };
 
+  // 입력 값 변경 핸들러
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewBusiness({ ...newBusiness, [name]: value });
@@ -146,8 +145,7 @@ export default function BusinessDashboard() {
               key={business.id}
               className="bg-white p-6 rounded-lg shadow flex flex-col items-start"
             >
-              <h3 className="text-lg font-bold">{business.business_name}</h3>
-              <p>위치: {business.location}</p>
+              <h3 className="text-lg font-bold">{business.business_type}</h3>
               <p>등록 유형: {business.business_registration}</p>
               <p>직원 수: {business.number_of_employees}</p>
               <div className="flex space-x-4 mt-4 justify-end w-full">
@@ -171,6 +169,7 @@ export default function BusinessDashboard() {
         </div>
       </main>
 
+      {/* 모달 */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
@@ -179,34 +178,12 @@ export default function BusinessDashboard() {
             </h3>
 
             <div className="mb-4">
-              <label className="block text-gray-700 mb-2">사업명</label>
-              <input
-                type="text"
-                name="business_name"
-                value={newBusiness.business_name}
-                onChange={handleInputChange}
-                className="w-full border px-3 py-2 rounded-lg"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2">위치</label>
-              <input
-                type="text"
-                name="location"
-                value={newBusiness.location}
-                onChange={handleInputChange}
-                className="w-full border px-3 py-2 rounded-lg"
-              />
-            </div>
-
-            <div className="mb-4">
               <label className="block text-gray-700 mb-2">사업 등록 유형</label>
               <select
                 name="business_registration"
                 value={newBusiness.business_registration}
                 onChange={handleInputChange}
-                className="w-full border px-3 py-2 rounded-lg"
+                className="w-full border px-3 py-2 rounded-lg focus:outline-none"
               >
                 <option value="개인">개인</option>
                 <option value="법인">법인</option>

@@ -1,12 +1,21 @@
 "use client";
+import { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
+import Navigation from "../component/navgation";
 
 export default function Home() {
   const router = useRouter();
+  const [selectedTax, setSelectedTax] = useState(
+    "부가가치세란 상품(재화)의 거래나 서비스(용역)의 제공과정에서 얻어지는 부가가치(이윤)에 대하여 과세하는 세금입니다."
+  );
 
   const handleBusinessRegistration = () => {
     router.push("/business");
+  };
+
+  const handleTaxSelection = (tax) => {
+    setSelectedTax(tax);
   };
 
   return (
@@ -16,28 +25,7 @@ export default function Home() {
         <meta name="description" content="LawHub" />
       </Head>
 
-      <header className="bg-blue-100 py-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-4">
-          <div className="flex items-center space-x-3">
-            <img src="/logo.svg" alt="LawHub Logo" className="w-10 h-10" />
-            <h1 className="text-2xl font-bold text-[#2AA8FF]">LawHub</h1>
-          </div>
-          <nav className="flex space-x-4 pt-1">
-            <a href="#" className="text-gray-700 hover:font-bold pt-2">
-              세금 계산하기
-            </a>
-            <a href="#" className="text-gray-700 hover:font-bold pt-2">
-              내 사업 관리
-            </a>
-            <a href="#" className="text-gray-700 hover:font-bold pt-2 pr-5">
-              마이페이지
-            </a>
-            <button className="bg-[#2AA8FF] text-white px-10 py-2 rounded hover:bg-[#0080D8]">
-              로그아웃
-            </button>
-          </nav>
-        </div>
-      </header>
+      <Navigation></Navigation>
 
       <main className="max-w-7xl mx-auto mt-5 px-4">
         <div className="text-left p-8 ">
@@ -81,29 +69,41 @@ export default function Home() {
             </div>
           </div>
 
-          <p className="text-gray-600 mb-6">
-            부가가치세란 상품(재화)의 거래나 서비스(용역)의 제공과정에서
-            얻어지는 부가가치(이윤)에 대하여 과세하는 세금입니다.
-          </p>
+          <p className="text-gray-600 mb-6">{selectedTax}</p>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <button className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <button
+              className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100"
+              onClick={() =>
+                handleTaxSelection(
+                  "종합소득세는 개인이 지난해 1년(2023년)간의 경제활동으로 얻은 소득에 대해서 납부하는 세금입니다."
+                )
+              }
+            >
               <img src="/wallet.svg" alt="종합소득세" className="w-10 h-10" />
               <span className="text-gray-700">종합소득세</span>
             </button>
-            <button className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100">
-              <img src="/receipt.svg" alt="취득세" className="w-10 h-10" />
-              <span className="text-gray-700">취득세</span>
-            </button>
-            <button className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100">
+
+            <button
+              className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100"
+              onClick={() =>
+                handleTaxSelection(
+                  "부가가치세란 상품(재화)의 거래나 서비스(용역)의 제공과정에서 얻어지는 부가가치(이윤)에 대하여 과세하는 세금입니다."
+                )
+              }
+            >
               <img src="/vat.svg" alt="부가가치세" className="w-10 h-10" />
               <span className="text-gray-700">부가가치세 (VAT)</span>
             </button>
-            <button className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100">
-              <img src="/transform.svg" alt="양도세" className="w-10 h-10" />
-              <span className="text-gray-700">양도세</span>
-            </button>
-            <button className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100">
+
+            <button
+              className="flex flex-col items-center bg-blue-50 p-4 rounded hover:bg-blue-100"
+              onClick={() =>
+                handleTaxSelection(
+                  "4대보험이란 사회보험의 일부로서 연금보험 / 건강보험 / 고용보험 / 산재보험을 말합니다."
+                )
+              }
+            >
               <img src="/ambulance.svg" alt="4대보험" className="w-10 h-10" />
               <span className="text-gray-700">4대보험</span>
             </button>
